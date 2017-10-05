@@ -22,10 +22,16 @@ class Blog(db.Model):
 
 @app.route('/blog', methods = ['GET'])
 def index():
+    #CHECK for query param. If not present, move onto the main blog page where they are all displayed.
+    blog_id = request.args.get('id')
+    if blog_id:
+        blog = Blog.query.get(blog_id)
+        return render_template('displaypost.html', blog=blog)
 
-    blogs = Blog.query.all()
+    else:
+        blogs = Blog.query.all()
+        return render_template('blogs.html', blogs=blogs)
 
-    return render_template('blogs.html', blogs=blogs)
 
 @app.route('/newpost')
 def display_newpost_form():
@@ -57,6 +63,11 @@ def add_blog():
         title_error=title_error,
         body_error=body_error)
 
+
+@app.route('/displaypost')
+def display_entry():
+   
+    pass
 
 
 if __name__ == "__main__":
