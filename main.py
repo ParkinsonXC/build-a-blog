@@ -27,20 +27,35 @@ def index():
 
     return render_template('blogs.html', blogs=blogs)
 
+@app.route('/newpost')
+def display_newpost_form():
+    return render_template('newpost.html')
 
-
-@app.route('/newpost', methods = ['GET', 'POST'])
+@app.route('/newpost', methods = ['POST'])
 def add_blog():
-    if request.method == 'POST':
-        blog_title = request.form['title']
-        blog_body = request.form['blog-body']
+    blog_title = request.form['title']
+    blog_body = request.form['blog-body']
+    #SET CONDITIONALS TO CHECK IF EITHER THE TITLE OR THE POST IS LEFT EMPTY
+
+    title_error = ""
+    body_error = ""
+
+    if len(blog_title) == 0:
+        title_error = "Your blog needs a title!"
+
+    if len(blog_body) == 0:
+        body_error = "Type a post! There's nothing here yet!"
+
+    if not title_error and not body_error:
         new_post = Blog(blog_title, blog_body)
         db.session.add(new_post)
         db.session.commit()
-
         return redirect('/blog')
+
     else:
-        return render_template('newpost.html')
+        return render_template('newpost.html',
+        title_error=title_error,
+        body_error=body_error)
 
 
 

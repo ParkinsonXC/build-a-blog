@@ -7,13 +7,15 @@
         Title for your new blog:
         <br>
         <input type="text" name="title"/>
+        <span class="error" style="color:red"><i>{{title_error}}</i></span>
     </label>
     <br>
     <br>
     <label>
         Your new post:
         <br>
-        <textarea type="text" name="blog-body"></textarea>
+        <textarea type="text" name="blog-body" rows="10" cols="50"></textarea>
+        <span class="error" style="color:red"><i>{{body_error}}</i></span>
     </label>
     <br>
     <input type='submit' value='Post it!' />
