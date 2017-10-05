@@ -16,11 +16,31 @@ class Blog(db.Model):
     def __init__(self, title, body):
         self.title = title
         self.body = body
+
+
 #AFTER we have created the above items, we need to use a python shell to initalize our database.
 
 @app.route('/blog', methods = ['GET'])
 def index():
-    return render_template('blogs.html')
+
+    blogs = Blog.query.all()
+
+    return render_template('blogs.html', blogs=blogs)
+
+
+
+@app.route('/newpost', methods = ['GET', 'POST'])
+def add_blog():
+    if request.method == 'POST':
+        blog_title = request.form['title']
+        blog_body = request.form['blog-body']
+        new_post = Blog(blog_title, blog_body)
+        db.session.add(new_post)
+        db.session.commit()
+
+        return redirect('/blog')
+    else:
+        return render_template('newpost.html')
 
 
 
