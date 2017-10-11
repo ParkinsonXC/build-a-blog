@@ -29,7 +29,7 @@ def index():
         return render_template('displaypost.html', blog=blog)
 
     else:
-        blogs = Blog.query.all()
+        blogs = Blog.query.all() #TRY A FILTER_BY HERE to change the order the blogs appear in
         return render_template('blogs.html', blogs=blogs)
 
 
@@ -52,24 +52,19 @@ def add_blog():
     if len(blog_body) == 0:
         body_error = "Type a post! There's nothing here yet!"
 
+    #If not, we are good to go. Initialize the new post into the class/database, add it, then commit it.
+    #After it has been committed, it will have an ID. Use that to redirect to the post itself.
     if not title_error and not body_error:
         new_post = Blog(blog_title, blog_body)
         db.session.add(new_post)
         db.session.commit()
         return redirect('/blog?id={}'.format(new_post.id))
         
-        #return render_template("displaypost.html", blog=blog)
-
+        
     else:
         return render_template('newpost.html',
         title_error=title_error,
         body_error=body_error)
-
-
-@app.route('/displaypost')
-def display_entry():
-   
-    pass
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 style="text-align: center">Build a Blog</h1>
-
+<h1 style="text-align:center">Build your blog</h1>
+<hr />
 <!--JINJA SYNTAX TO DISPLAY EACH BLOG POST -->
 {% if blogs|length == 0 %}
 <p>No posts yet</p>
@@ -10,7 +10,7 @@
 {% else %}
 
 {% for blog in blogs %}
-<a href="/blog?id={{blog.id}}"><h2>{{blog.title}}</h2></a>
+<a href="/blog?id={{blog.id}}"><h2><i>{{blog.title}}</i></h2></a>
 <p>{{blog.body}}</p>
 <hr />
 {% endfor %}
