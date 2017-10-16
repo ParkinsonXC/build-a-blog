@@ -1,5 +1,8 @@
 from flask import Flask, request, redirect, render_template
-from flask_sqlalchemy import SQLAlchemy 
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+from sqlalchemy import desc
+
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -12,10 +15,14 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(250))
+    pub_date = db.Column(db.DateTime)
 
-    def __init__(self, title, body):
+    def __init__(self, title, body, pub_date=None):
         self.title = title
         self.body = body
+        if pub_date is None:
+            pub_date = datetime.utcnow()
+        self.pub_date = pub_date
 
 
 #AFTER we have created the above items, we need to use a python shell to initalize our database.
@@ -29,7 +36,7 @@ def index():
         return render_template('displaypost.html', blog=blog)
 
     else:
-        blogs = Blog.query.all() #TRY A FILTER_BY HERE to change the order the blogs appear in
+        blogs = Blog.query.order_by(desc(Blog.pub_date)).all()
         return render_template('blogs.html', blogs=blogs)
 
 
